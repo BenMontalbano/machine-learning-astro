@@ -8,8 +8,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 # Author: Ben Montalbano
-# Purpose: The purpose of this script is to make a computational simulation
-# of the Earth falling into the sun.
+# Purpose: The purpose of this script is to predict stable and unstable orbits of planets in a binary star system
+# using randomly genreated planets and logistic regression.
 
 # Define Gravitational Constant, speed of light, and step size
 GC = 6.743E-11  # SI units
@@ -35,7 +35,7 @@ BinaryMinus = body('BinaryMinus', 1.989E30, 4.7E10, 0, 0, 0, -50300 , 0)
 BinaryBodies=[]
 InitialDistance=[]
 Planets=list(map(chr, range(ord('a'), ord('f')+1)))
-'''Planets = []
+ Planets = []
 letters='abcdefghijklmnopqrstuvwxyz'
 for first in letters:
     for second in letters:
@@ -43,18 +43,18 @@ for first in letters:
         if len(Planets) == 100:
             break
     if len(Planets) == 100:
-        break'''
+        break
 for Planet in Planets:
     Mass=random.uniform(1E22,2E27)
     Orbital_Distance=random.uniform(8E10,4E11)
     phi=random.uniform(0,2*np.pi)
-    theta=random.uniform(np.pi/6,np.pi/6)
+    theta=random.uniform(-np.pi/6,np.pi/6)
     Orbital_XVel=np.sqrt(GC*(BinaryPlus.mass + BinaryMinus.mass)/Orbital_Distance)*np.cos(theta)*np.cos(phi)
     Orbital_YVel=np.sqrt(GC*(BinaryPlus.mass + BinaryMinus.mass)/Orbital_Distance)*np.cos(theta)*np.sin(phi)
     Orbital_ZVel=np.sqrt(GC*(BinaryPlus.mass + BinaryMinus.mass)/Orbital_Distance)*np.sin(theta)
     planet=body(Planet,Mass,Orbital_Distance*np.sin(phi),Orbital_Distance*np.cos(phi),0,Orbital_XVel,Orbital_YVel, Orbital_ZVel)
     BinaryBodies.append(planet)
-    InitialDistance.append(Mass)
+    InitialDistance.append(Orbital_Distance)
 
     
 # Create List of Bodies
@@ -118,8 +118,7 @@ def Motion(Newobject):
             Newobject.Xvel, Newobject.Yvel, Newobject.Zvel]
 
 def Ending_Place(Newobject):
-    Test_Group=[BinaryMinus,BinaryPlus,Newobject]
-    DistanceArrayTest = np.zeros((Num_Bodies, 1), dtype=np.float64)
+    DistanceArrayTest = np.zeros((3, 1), dtype=np.float64)
     i = 0
     for Body in Test_Group:
         RadSquare = ((Newobject.Xpos - Body.Xpos) ** 2 +
@@ -179,6 +178,7 @@ for i,result in enumerate(Stability_Array):
 print("Accuracy:", accuracy_score(y_test, y_pred))
 print(Stability_Array)
 
+"""
 # Setup for Simulation
 Duration = 100000000
 Timesteps = Duration // TIMEINC
@@ -246,4 +246,4 @@ def Next_Frame(frame):
 ani = animation.FuncAnimation(fig, Next_Frame, frames=range(0, Timesteps, 30),
                               init_func=Place_Planets, blit=False, interval=1)
 
-plt.show()
+plt.show()"""
